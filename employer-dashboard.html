@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Dashboard - JobSeeker Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-green-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold hover:text-green-200 transition-colors">JobSeeker Pro</a>
+            <div class="space-x-4">
+                <a href="job-seeker-dashboard.html" class="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded transition-colors">
+                    <i class="fas fa-user"></i> Switch to Job Seeker
+                </a>
+                <span class="bg-green-500 px-4 py-2 rounded">
+                    <i class="fas fa-building"></i> Employer
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Employer Dashboard</h2>
+            <p class="text-gray-600 mb-6">Manage your hiring process efficiently with our comprehensive tools</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <a href="create-job.html" class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg cursor-pointer hover:shadow-lg transition-shadow card-hover">
+                    <i class="fas fa-plus text-3xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Create Job Vacancy</h3>
+                    <p class="mb-4">Post new job openings and attract top talent to your organization</p>
+                    <div class="text-sm opacity-90">
+                        <i class="fas fa-check mr-2"></i>Easy Job Posting<br>
+                        <i class="fas fa-check mr-2"></i>Detailed Requirements<br>
+                        <i class="fas fa-check mr-2"></i>Instant Publishing
+                    </div>
+                </a>
+                
+                <a href="manage-candidates.html" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg cursor-pointer hover:shadow-lg transition-shadow card-hover">
+                    <i class="fas fa-users text-3xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Manage Candidates</h3>
+                    <p class="mb-4">Review applications, schedule interviews, and manage your hiring pipeline</p>
+                    <div class="text-sm opacity-90">
+                        <i class="fas fa-check mr-2"></i>Application Review<br>
+                        <i class="fas fa-check mr-2"></i>Candidate Communication<br>
+                        <i class="fas fa-check mr-2"></i>Hiring Pipeline
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Active Jobs</h3>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600" id="activeJobsCount">0</div>
+                    <p class="text-gray-600">Currently Posted</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Applications</h3>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600" id="applicationsCount">0</div>
+                    <p class="text-gray-600">Total Received</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Interviews</h3>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600" id="interviewsCount">0</div>
+                    <p class="text-gray-600">Scheduled</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Recent Activity</h3>
+            <div id="employerActivity" class="space-y-3">
+                <p class="text-gray-500">No recent activity. Start by creating your first job posting!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/employer.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

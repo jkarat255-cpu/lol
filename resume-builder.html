@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder - JobSeeker Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-purple-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold hover:text-purple-200 transition-colors">JobSeeker Pro</a>
+            <div class="space-x-4">
+                <a href="job-seeker-dashboard.html" class="bg-purple-500 hover:bg-purple-700 px-4 py-2 rounded transition-colors">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Resume Builder</h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Form Section -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Resume Information</h3>
+                    <form id="resumeForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="fullName" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                            <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone *</label>
+                            <input type="tel" id="phone" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Professional Summary</label>
+                            <textarea id="summary" class="w-full p-3 border border-gray-300 rounded-lg h-24 focus:ring-2 focus:ring-purple-500" placeholder="Brief professional summary highlighting your key strengths and career objectives..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Work Experience</label>
+                            <textarea id="experience" class="w-full p-3 border border-gray-300 rounded-lg h-32 focus:ring-2 focus:ring-purple-500" placeholder="Job Title - Company Name (Start Date - End Date)&#10;• Key achievement or responsibility&#10;• Another achievement with quantifiable results&#10;• Third accomplishment demonstrating impact"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Education</label>
+                            <textarea id="education" class="w-full p-3 border border-gray-300 rounded-lg h-24 focus:ring-2 focus:ring-purple-500" placeholder="Degree - University/Institution (Graduation Year)&#10;Relevant coursework, honors, or GPA if applicable"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Skills</label>
+                            <textarea id="skills" class="w-full p-3 border border-gray-300 rounded-lg h-24 focus:ring-2 focus:ring-purple-500" placeholder="Technical Skills: Programming languages, software, tools&#10;Soft Skills: Leadership, communication, problem-solving&#10;Languages: English (Native), Spanish (Conversational)"></textarea>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button type="button" id="generateResumeBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors">
+                                <i class="fas fa-magic"></i> Generate Resume
+                            </button>
+                            <button type="button" id="getAISuggestionsBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors">
+                                <i class="fas fa-lightbulb"></i> Get AI Suggestions
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-2">Upload Existing Resume for Analysis</h4>
+                        <input type="file" id="existingResumeUpload" accept=".pdf" class="w-full p-3 border border-gray-300 rounded-lg mb-2">
+                        <button id="analyzeResumeBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-search"></i> Analyze & Get Suggestions
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">Upload your current resume to get AI-powered improvement suggestions</p>
+                    </div>
+                </div>
+                
+                <!-- Preview Section -->
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold">Resume Preview</h3>
+                        <select id="resumeTemplate" class="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                            <option value="modern">Modern Template</option>
+                            <option value="classic">Classic Template</option>
+                            <option value="creative">Creative Template</option>
+                        </select>
+                    </div>
+                    
+                    <div id="resumePreview" class="border border-gray-300 rounded-lg p-6 bg-white min-h-96 shadow-inner custom-scrollbar" style="max-height: 600px; overflow-y: auto;">
+                        <p class="text-gray-500 text-center">Fill in your information and click "Generate Resume" to see the preview...</p>
+                    </div>
+                    
+                    <div class="mt-4 flex space-x-4">
+                        <button id="downloadResumeBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors" disabled>
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
+                        <button id="saveResumeBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-save"></i> Save Progress
+                        </button>
+                    </div>
+                    
+                    <!-- AI Suggestions -->
+                    <div id="aiSuggestions" class="mt-6 hidden">
+                        <h4 class="text-lg font-semibold mb-2">AI Suggestions</h4>
+                        <div id="suggestionsContent" class="bg-yellow-50 p-4 rounded-lg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg">
+            <div class="flex items-center space-x-4">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                <span id="loadingText">Processing...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/gemini-api.js"></script>
+    <script src="js/pdf-utils.js"></script>
+    <script src="js/resume-builder.js"></script>
+    <script src="js/app-init.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

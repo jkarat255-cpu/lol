@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Candidates - JobSeeker Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-green-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold hover:text-green-200 transition-colors">JobSeeker Pro</a>
+            <div class="space-x-4">
+                <a href="employer-dashboard.html" class="bg-green-500 hover:bg-green-700 px-4 py-2 rounded transition-colors">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Manage Candidates</h2>
+
+            <!-- Filter and Search -->
+            <div class="mb-6">
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Job</label>
+                        <select id="jobFilter" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                            <option value="">All Jobs</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+                        <select id="statusFilter" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending Review</option>
+                            <option value="reviewing">Under Review</option>
+                            <option value="interview">Interview Scheduled</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Search Candidates</label>
+                        <input type="text" id="candidateSearch" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="Search by name or email...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="grid md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-blue-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-blue-600" id="totalApplications">0</div>
+                    <div class="text-sm text-gray-600">Total Applications</div>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-yellow-600" id="pendingApplications">0</div>
+                    <div class="text-sm text-gray-600">Pending Review</div>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-600" id="interviewsScheduled">0</div>
+                    <div class="text-sm text-gray-600">Interviews Scheduled</div>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-purple-600" id="hiredCandidates">0</div>
+                    <div class="text-sm text-gray-600">Hired</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Candidates List -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">Applications</h3>
+                <div class="flex space-x-2">
+                    <button id="exportBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button id="bulkActionBtn" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-tasks"></i> Bulk Actions
+                    </button>
+                </div>
+            </div>
+
+            <div id="candidatesList" class="space-y-4">
+                <div class="text-center py-12">
+                    <i class="fas fa-users text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-500 text-lg">No applications yet</p>
+                    <p class="text-gray-400 text-sm">Create job vacancies to start receiving applications</p>
+                    <a href="create-job.html" class="inline-block mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors">
+                        <i class="fas fa-plus"></i> Create Your First Job
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidate Details Modal -->
+    <div id="candidateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-90vh overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 id="candidateName" class="text-2xl font-bold text-gray-800"></h3>
+                    <button id="closeCandidateModal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2">
+                        <div id="candidateDetails" class="space-y-4"></div>
+                    </div>
+                    <div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-3">Actions</h4>
+                            <div class="space-y-2">
+                                <button id="scheduleInterviewBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                    <i class="fas fa-calendar"></i> Schedule Interview
+                                </button>
+                                <button id="sendMessageBtn" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                    <i class="fas fa-envelope"></i> Send Message
+                                </button>
+                                <button id="acceptCandidateBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                    <i class="fas fa-check"></i> Accept
+                                </button>
+                                <button id="rejectCandidateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-3">Application Timeline</h4>
+                            <div id="applicationTimeline" class="space-y-2 text-sm"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full mx-4">
+            <div class="p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Send Message</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                        <input type="text" id="messageSubject" class="w-full p-3 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                        <textarea id="messageContent" class="w-full p-3 border border-gray-300 rounded-lg h-32"></textarea>
+                    </div>
+                </div>
+                <div class="mt-6 flex space-x-4">
+                    <button id="sendMessageConfirm" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-paper-plane"></i> Send
+                    </button>
+                    <button id="cancelMessage" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/employer.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Interview - JobSeeker Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-purple-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold hover:text-purple-200 transition-colors">JobSeeker Pro</a>
+            <div class="space-x-4">
+                <a href="interview-practice.html" class="bg-purple-500 hover:bg-purple-700 px-4 py-2 rounded transition-colors">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Mock Interview</h2>
+
+            <!-- Setup Phase -->
+            <div id="mockSetupPhase" class="mb-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload Resume (PDF)</label>
+                        <input type="file" id="resumeUpload" accept=".pdf" class="w-full p-3 border border-gray-300 rounded-lg">
+                        <p class="text-sm text-gray-500 mt-1">Upload your resume for personalized questions</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Job Description</label>
+                        <textarea id="jobDescription" class="w-full p-3 border border-gray-300 rounded-lg h-32" placeholder="Paste the job description here..."></textarea>
+                        <p class="text-sm text-gray-500 mt-1">Provide the job description for targeted questions</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="isMockTechRole" class="mr-2">
+                        <span class="text-sm font-medium text-gray-700">Include coding questions for technical role?</span>
+                    </label>
+                </div>
+                <div class="mt-6">
+                    <button id="startMockBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors">
+                        <i class="fas fa-play"></i> Start Mock Interview
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mock Interview Phase -->
+            <div id="mockInterviewPhase" class="hidden">
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">All Interview Questions:</h3>
+                    <div id="allQuestions" class="space-y-4 max-h-60 overflow-y-auto bg-gray-50 p-4 rounded-lg custom-scrollbar"></div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="mb-4">
+                            <h3 class="text-lg font-semibold mb-2">Answer All Questions:</h3>
+                            <div id="mockAnswerTranscript" class="bg-blue-50 p-4 rounded-lg min-h-40 max-h-60 overflow-y-auto custom-scrollbar"></div>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button id="recordMockAnswerBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-microphone"></i> Record Answers
+                            </button>
+                            <button id="finishMockBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-flag-checkered"></i> Finish Mock Interview
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Video Feed:</h3>
+                        <video id="mockVideoFeed" class="w-full h-64 bg-gray-200 rounded-lg" autoplay muted></video>
+                        <div id="mockConfidenceAnalysis" class="mt-4 p-4 bg-yellow-50 rounded-lg">
+                            <h4 class="font-semibold mb-2">Real-time Analysis:</h4>
+                            <div class="space-y-2">
+                                <div id="mockConfidenceScore" class="text-sm text-gray-600">Confidence: Analyzing...</div>
+                                <div id="mockEyeContact" class="text-sm text-gray-600">Eye Contact: Analyzing...</div>
+                                <div id="mockFacialExpression" class="text-sm text-gray-600">Expression: Analyzing...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coding Section -->
+                <div id="codingSection" class="hidden mt-6">
+                    <h3 class="text-lg font-semibold mb-2">Coding Challenge:</h3>
+                    <div id="codingQuestion" class="bg-gray-100 p-4 rounded-lg mb-4"></div>
+                    <div id="codeEditor" class="border border-gray-300 rounded-lg monaco-editor-container" style="height: 300px;"></div>
+                    <div class="mt-4 flex space-x-4">
+                        <button id="submitCodeBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-check"></i> Submit Code
+                        </button>
+                        <button id="skipCodeBtn" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-skip-forward"></i> Skip Coding
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Phase -->
+            <div id="mockFeedbackPhase" class="hidden">
+                <h3 class="text-2xl font-bold mb-4">Mock Interview Feedback</h3>
+                <div id="mockOverallFeedback" class="space-y-4"></div>
+                <div class="mt-6 flex space-x-4">
+                    <button id="startNewMock" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors">
+                        <i class="fas fa-redo"></i> Start New Mock Interview
+                    </button>
+                    <a href="interview-practice.html" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors">
+                        <i class="fas fa-arrow-left"></i> Back to Practice Options
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg">
+            <div class="flex items-center space-x-4">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                <span id="loadingText">Processing...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/gemini-api.js"></script>
+    <script src="js/tensorflow-analysis.js"></script>
+    <script src="js/speech-recognition.js"></script>
+    <script src="js/pdf-utils.js"></script>
+    <script src="js/interview-practice.js"></script>
+    <script src="js/app-init.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
+</body>
+</html>
