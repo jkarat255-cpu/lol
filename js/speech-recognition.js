@@ -1,5 +1,5 @@
 // Speech recognition functionality for JobSeeker Pro
-class SpeechRecognition {
+class AppSpeechRecognition {
   constructor() {
     this.recognition = null
     this.isRecording = false
@@ -18,7 +18,9 @@ class SpeechRecognition {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
       if (!SpeechRecognition) {
-        console.warn("Speech recognition not supported in this browser")
+        if (window.Utils && window.Utils.showNotification) {
+          window.Utils.showNotification("Speech recognition is not supported in this browser.", "error")
+        }
         return false
       }
 
@@ -33,10 +35,11 @@ class SpeechRecognition {
       // Set up event listeners
       this.setupEventListeners()
 
-      console.log("Speech recognition initialized successfully")
       return true
     } catch (error) {
-      console.error("Speech recognition initialization failed:", error)
+      if (window.Utils && window.Utils.showNotification) {
+        window.Utils.showNotification("Failed to initialize speech recognition.", "error")
+      }
       return false
     }
   }
@@ -46,7 +49,6 @@ class SpeechRecognition {
     if (!this.recognition) return
 
     this.recognition.onstart = () => {
-      console.log("Speech recognition started")
       this.isRecording = true
     }
 
@@ -56,18 +58,14 @@ class SpeechRecognition {
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcript = event.results[i][0].transcript
-
         if (event.results[i].isFinal) {
           finalTranscript += transcript
         } else {
           interimTranscript += transcript
         }
       }
-
       this.finalTranscript = finalTranscript
       this.interimTranscript = interimTranscript
-
-      // Call the result callback if provided
       if (this.onResultCallback) {
         this.onResultCallback({
           finalTranscript: this.finalTranscript,
@@ -78,39 +76,31 @@ class SpeechRecognition {
     }
 
     this.recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error)
-
       let errorMessage = "Speech recognition error occurred."
-
       switch (event.error) {
         case "no-speech":
-          errorMessage = "No speech detected. Please try speaking again."
+          errorMessage = "No speech detected. Please try again."
           break
         case "audio-capture":
-          errorMessage = "Microphone not accessible. Please check permissions."
+          errorMessage = "Microphone not accessible. Check permissions."
           break
         case "not-allowed":
-          errorMessage = "Microphone permission denied. Please allow microphone access."
+          errorMessage = "Microphone permission denied. Allow access to use speech recognition."
           break
         case "network":
-          errorMessage = "Network error occurred during speech recognition."
+          errorMessage = "Network error during speech recognition."
           break
         default:
           errorMessage = `Speech recognition error: ${event.error}`
       }
-
       if (window.Utils && window.Utils.showNotification) {
         window.Utils.showNotification(errorMessage, "error")
       }
-
       this.isRecording = false
     }
 
     this.recognition.onend = () => {
-      console.log("Speech recognition ended")
       this.isRecording = false
-
-      // Call the end callback if provided
       if (this.onEndCallback) {
         this.onEndCallback(this.finalTranscript)
       }
@@ -120,39 +110,25 @@ class SpeechRecognition {
   // Start recording
   startRecording(onResult, onEnd) {
     if (!this.recognition) {
-      console.error("Speech recognition not available")
       if (window.Utils && window.Utils.showNotification) {
-        window.Utils.showNotification("Speech recognition not supported in this browser", "error")
+        window.Utils.showNotification("Speech recognition is not available.", "error")
       }
       return false
     }
-
     if (this.isRecording) {
-      console.warn("Recording already in progress")
       return false
     }
-
     try {
-      // Reset transcripts
       this.finalTranscript = ""
       this.interimTranscript = ""
-
-      // Set callbacks
       this.onResultCallback = onResult
       this.onEndCallback = onEnd
-
-      // Start recognition
       this.recognition.start()
-
-      console.log("Starting speech recording...")
       return true
     } catch (error) {
-      console.error("Failed to start recording:", error)
-
       if (window.Utils && window.Utils.showNotification) {
-        window.Utils.showNotification("Failed to start recording. Please try again.", "error")
+        window.Utils.showNotification("Could not start recording. Try again.", "error")
       }
-
       return false
     }
   }
@@ -162,13 +138,10 @@ class SpeechRecognition {
     if (!this.recognition || !this.isRecording) {
       return false
     }
-
     try {
       this.recognition.stop()
-      console.log("Stopping speech recording...")
       return true
     } catch (error) {
-      console.error("Failed to stop recording:", error)
       return false
     }
   }
@@ -240,6 +213,6 @@ class SpeechRecognition {
   }
 }
 
-// Make it globally available
-window.SpeechRecognition = SpeechRecognition
-console.log("Speech Recognition class loaded successfully")
+// Make it globally available as AppSpeechRecognition (do not overwrite browser SpeechRecognition)
+window.AppSpeechRecognition = AppSpeechRecognition;
+console.log("AppSpeechRecognition class loaded successfully");

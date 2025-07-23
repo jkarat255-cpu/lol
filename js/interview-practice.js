@@ -46,13 +46,6 @@ class InterviewPractice {
       })
     }
 
-    const finishInterviewBtn = document.getElementById("finishInterviewBtn")
-    if (finishInterviewBtn) {
-      finishInterviewBtn.addEventListener("click", () => {
-        this.finishInterview()
-      })
-    }
-
     // Mock interview
     const startMockBtn = document.getElementById("startMockBtn")
     if (startMockBtn) {
@@ -366,19 +359,23 @@ class InterviewPractice {
 
   // Toggle recording (practice mode)
   toggleRecording() {
+    console.log('[toggleRecording] Called. isRecording:', this.isRecording)
     const recordBtn = document.getElementById("recordAnswerBtn")
     const transcriptElement = document.getElementById("answerTranscript")
 
     if (!this.isRecording) {
       // Start recording
       if (window.speechRecognition) {
+        console.log('[toggleRecording] Attempting to start recording...')
         const success = window.speechRecognition.startRecording(
           (result) => {
+            console.log('[toggleRecording] onResult callback:', result)
             if (transcriptElement) {
               transcriptElement.textContent = result.finalTranscript + result.interimTranscript
             }
           },
           (finalTranscript) => {
+            console.log('[toggleRecording] onEnd callback. Final transcript:', finalTranscript)
             this.handleAnswerComplete(finalTranscript)
           },
         )
@@ -390,13 +387,18 @@ class InterviewPractice {
             recordBtn.classList.add("recording", "bg-red-700")
           }
           this.showNotification("Recording started. Speak your answer now.", "info")
+          console.log('[toggleRecording] Recording started successfully.')
+        } else {
+          console.log('[toggleRecording] Failed to start recording.')
         }
       } else {
         this.showNotification("Speech recognition not available. Please check your browser settings.", "error")
+        console.log('[toggleRecording] window.speechRecognition not available.')
       }
     } else {
       // Stop recording
       if (window.speechRecognition) {
+        console.log('[toggleRecording] Stopping recording...')
         window.speechRecognition.stopRecording()
       }
       this.isRecording = false
@@ -404,6 +406,7 @@ class InterviewPractice {
         recordBtn.innerHTML = '<i class="fas fa-microphone"></i> Record Answer'
         recordBtn.classList.remove("recording", "bg-red-700")
       }
+      console.log('[toggleRecording] Recording stopped.')
     }
   }
 

@@ -87,9 +87,9 @@
     }
 
     // Initialize Speech Recognition
-    if (window.SpeechRecognition && !window.speechRecognition) {
-      window.speechRecognition = new window.SpeechRecognition()
-      console.log("Speech Recognition initialized")
+    if (window.AppSpeechRecognition && !window.speechRecognition) {
+      window.speechRecognition = new window.AppSpeechRecognition();
+      console.log("AppSpeechRecognition initialized");
     }
 
     // Initialize PDF Utils
